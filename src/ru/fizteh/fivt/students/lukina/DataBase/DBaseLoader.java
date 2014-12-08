@@ -1,4 +1,4 @@
-package ru.fizteh.fivt.students.lukina.proxy;
+package ru.fizteh.fivt.students.lukina.DataBase;
 
 import ru.fizteh.fivt.storage.structured.Storeable;
 import ru.fizteh.fivt.storage.structured.TableProvider;

@@ -1,4 +1,4 @@
-package ru.fizteh.fivt.students.lukina.proxy;
+package ru.fizteh.fivt.students.lukina.DataBase;
 
 import ru.fizteh.fivt.storage.structured.ColumnFormatException;
 import ru.fizteh.fivt.storage.structured.Storeable;
@@ -113,25 +113,5 @@ public class DBaseRow implements Storeable {
             throw new ColumnFormatException("Incorrect value format");
         }
         return (String) list.get(columnIndex);
-    }
-
-    @Override
-    public String toString() {
-        StringBuffer string = new StringBuffer(getClass().getSimpleName());
-        string.append("[");
-        int size = list.size() - 1;
-        for (int i = 0; i < size; ++i) {
-            Object obj = list.get(i);
-            if (obj != null) {
-                string.append(obj.toString());
-            }
-            string.append(",");
-        }
-        Object obj = list.get(list.size() - 1);
-        if (obj != null) {
-            string.append(obj.toString());
-        }
-        string.append("]");
-        return string.toString();
     }
 }

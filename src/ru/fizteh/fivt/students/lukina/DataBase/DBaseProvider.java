@@ -1,4 +1,4 @@
-package ru.fizteh.fivt.students.lukina.proxy;
+package ru.fizteh.fivt.students.lukina.DataBase;
 
 import ru.fizteh.fivt.storage.structured.ColumnFormatException;
 import ru.fizteh.fivt.storage.structured.Storeable;
@@ -15,8 +15,6 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.Vector;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
 
 
 public class DBaseProvider implements TableProvider, AutoCloseable {
@@ -25,8 +23,6 @@ public class DBaseProvider implements TableProvider, AutoCloseable {
     private String rootDir;
     private String oldPath;
     private volatile boolean isClosed = false;
-
-    private Lock lock = new ReentrantLock(true);
 
     public DBaseProvider(String dir) {
         if (dir == null || dir.isEmpty()) {
@@ -84,15 +80,13 @@ public class DBaseProvider implements TableProvider, AutoCloseable {
             throw new IllegalArgumentException("name is incorrect");
         }
         DBase getTable = null;
-        lock.lock();
-        ;
         try {
             getTable = tableBase.get(name);
             if (getTable == null) {
                 getTable = loader.loadTable(new File(rootDir + name));
             }
         } finally {
-            lock.unlock();
+            //lock.unlock();
         }
         return getTable;
     }
@@ -185,7 +179,7 @@ public class DBaseProvider implements TableProvider, AutoCloseable {
         }
         ArrayList<Class<?>> columnTypes = checkColumnTypes(typesList);
         File fileTable = new File(rootDir + name);
-        lock.lock();
+        //lock.lock();
         if (!fileTable.exists()) {
             try {
                 if (!fileTable.mkdir()) {
@@ -201,10 +195,10 @@ public class DBaseProvider implements TableProvider, AutoCloseable {
                 tableBase.put(name, table);
                 return table;
             } finally {
-                lock.unlock();
+                //lock.unlock();
             }
         } else {
-            lock.unlock();
+            //lock.unlock();
         }
         return null;
     }
@@ -216,7 +210,7 @@ public class DBaseProvider implements TableProvider, AutoCloseable {
             throw new IllegalArgumentException("name is incorrect");
         }
         File fileTable = new File(rootDir + name);
-        lock.lock();
+        //lock.lock();
         try {
             if (!fileTable.exists() && tableBase.get(name) == null) {
                 throw new IllegalStateException("table not exists");
@@ -225,16 +219,16 @@ public class DBaseProvider implements TableProvider, AutoCloseable {
             tableBase.get(name).setRemoved();
             tableBase.remove(name);
         } finally {
-            lock.unlock();
+            //lock.unlock();
         }
     }
 
     protected void closeTable(String name) {
-        lock.lock();
+        //lock.lock();
         try {
             tableBase.remove(name);
         } finally {
-            lock.unlock();
+            //lock.unlock();
         }
     }
 
@@ -422,15 +416,6 @@ public class DBaseProvider implements TableProvider, AutoCloseable {
             tableNames.add(name);
         }
         return tableNames;
-    }
-
-    @Override
-    public String toString() {
-        StringBuffer string = new StringBuffer(getClass().getSimpleName());
-        string.append("[");
-        string.append(rootDir);
-        string.append("]");
-        return string.toString();
     }
 
 }

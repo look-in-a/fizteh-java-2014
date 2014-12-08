@@ -1,4 +1,4 @@
-package ru.fizteh.fivt.students.lukina.proxy;
+package ru.fizteh.fivt.students.lukina.DataBase;
 
 import ru.fizteh.fivt.storage.structured.ColumnFormatException;
 import ru.fizteh.fivt.storage.structured.Storeable;
@@ -15,8 +15,6 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 public class DBase implements Table, AutoCloseable {
     private static String rootDir = "";
-    protected DBaseProvider provider;
-    protected HashMap<String, Storeable> commonDataMap = new HashMap<>();
     protected ThreadLocal<HashMap<String, Storeable>> dataMap
             = new ThreadLocal<HashMap<String, Storeable>>() {
         @Override
@@ -24,12 +22,14 @@ public class DBase implements Table, AutoCloseable {
             return new HashMap<>();
         }
     };
+    protected HashMap<String, Storeable> commonDataMap = new HashMap<>();
     protected ArrayList<Class<?>> typesList;
-    private String currTable = "";
+    protected DBaseProvider provider;
     private ReentrantReadWriteLock readWriteLock = new ReentrantReadWriteLock(
             true);
     private Lock read = readWriteLock.readLock();
     private Lock write = readWriteLock.writeLock();
+    private String currTable = "";
     private volatile boolean closed = false;
 
     public DBase(String tableName, String root, TableProvider prov) {
@@ -382,14 +382,5 @@ public class DBase implements Table, AutoCloseable {
         return keys;
     }
 
-    @Override
-    public String toString() {
-        StringBuffer string = new StringBuffer(getClass().getSimpleName());
-        string.append("[");
-        string.append(rootDir + currTable);
-        string.append("]");
-        return string.toString();
-
-    }
 
 }

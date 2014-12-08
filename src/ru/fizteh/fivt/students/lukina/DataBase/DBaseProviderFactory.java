@@ -1,4 +1,4 @@
-package ru.fizteh.fivt.students.lukina.Parallel;
+package ru.fizteh.fivt.students.lukina.DataBase;
 
 import ru.fizteh.fivt.storage.structured.TableProvider;
 import ru.fizteh.fivt.storage.structured.TableProviderFactory;

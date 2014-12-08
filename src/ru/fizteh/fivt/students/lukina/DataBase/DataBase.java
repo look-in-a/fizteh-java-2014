@@ -1,4 +1,4 @@
-package ru.fizteh.fivt.students.lukina.Parallel;
+package ru.fizteh.fivt.students.lukina.DataBase;
 
 import ru.fizteh.fivt.storage.structured.Storeable;
 
@@ -352,7 +352,7 @@ public class DataBase {
             }
         }
     }
-
+    
     public void exec(String[] args) {
         File dir = new File(System.getProperty("fizteh.db.dir"));
         if (dir.isAbsolute()) {
